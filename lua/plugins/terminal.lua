@@ -2,6 +2,7 @@
 -- Три независимых терминала (плавающий, снизу, сбоку) + lazygit + запуск текущего файла.
 -- Alt-клавиши в kitty на macOS работают только с `macos_option_as_alt yes` в kitty.conf,
 -- поэтому всё продублировано на <leader>t.
+local t = require("config.i18n").t
 
 local terms = {}
 
@@ -62,7 +63,7 @@ local function run_file()
   local ft = vim.bo.filetype
   local runner = runners[ft]
   if not runner then
-    vim.notify("Не знаю, как запустить " .. ft .. " — добавь в runners (lua/plugins/terminal.lua)", vim.log.levels.WARN)
+    vim.notify(t("Don't know how to run '%s' — add it to runners in lua/plugins/terminal.lua"):format(ft), vim.log.levels.WARN)
     return
   end
   local file = vim.fn.shellescape(vim.fn.expand("%:p"))
@@ -96,19 +97,19 @@ return {
     version = "*",
     cmd = { "ToggleTerm", "TermExec", "ToggleTermSendCurrentLine", "ToggleTermSendVisualSelection" },
     keys = {
-      { "<C-\\>", toggle("float", float), mode = { "n", "t" }, desc = "Терминал плавающий" },
-      { "<A-i>", toggle("float", float), mode = { "n", "t" }, desc = "Терминал плавающий" },
-      { "<A-h>", toggle("bottom", bottom), mode = { "n", "t" }, desc = "Терминал снизу" },
-      { "<A-v>", toggle("side", side), mode = { "n", "t" }, desc = "Терминал сбоку" },
-      { "<leader>tf", toggle("float", float), desc = "Терминал плавающий" },
-      { "<leader>tb", toggle("bottom", bottom), desc = "Терминал снизу" },
-      { "<leader>tv", toggle("side", side), desc = "Терминал сбоку" },
+      { "<C-\\>", toggle("float", float), mode = { "n", "t" }, desc = t("Floating terminal") },
+      { "<A-i>", toggle("float", float), mode = { "n", "t" }, desc = t("Floating terminal") },
+      { "<A-h>", toggle("bottom", bottom), mode = { "n", "t" }, desc = t("Bottom terminal") },
+      { "<A-v>", toggle("side", side), mode = { "n", "t" }, desc = t("Side terminal") },
+      { "<leader>tf", toggle("float", float), desc = t("Floating terminal") },
+      { "<leader>tb", toggle("bottom", bottom), desc = t("Bottom terminal") },
+      { "<leader>tv", toggle("side", side), desc = t("Side terminal") },
       { "<leader>tg", toggle("lazygit", { cmd = "lazygit", direction = "float", count = 104 }), desc = "Lazygit" },
       { "<leader>gg", toggle("lazygit", { cmd = "lazygit", direction = "float", count = 104 }), desc = "Lazygit" },
-      { "<leader>tl", send_line, desc = "Отправить строку в нижний терминал" },
-      { "<leader>tl", send_selection, mode = "v", desc = "Отправить выделение в нижний терминал" },
-      { "<leader>rr", run_file, desc = "Запустить текущий файл" },
-      { "<leader>ta", "<cmd>TermSelect<cr>", desc = "Выбрать терминал" },
+      { "<leader>tl", send_line, desc = t("Send line to bottom terminal") },
+      { "<leader>tl", send_selection, mode = "v", desc = t("Send selection to bottom terminal") },
+      { "<leader>rr", run_file, desc = t("Run current file") },
+      { "<leader>ta", "<cmd>TermSelect<cr>", desc = t("Select terminal") },
     },
     opts = {
       size = function(t)

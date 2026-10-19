@@ -1,3 +1,4 @@
+local t = require("config.i18n").t
 return {
   { "nvim-tree/nvim-web-devicons", lazy = true },
 
@@ -9,22 +10,22 @@ return {
       preset = "helix",
       delay = 300,
       spec = {
-        { "<leader>f", group = "Поиск (telescope)" },
+        { "<leader>f", group = t("Find (telescope)") },
         { "<leader>g", group = "Git" },
         { "<leader>l", group = "LSP" },
-        { "<leader>d", group = "Диагностика / ошибки" },
-        { "<leader>t", group = "Терминал / темы" },
-        { "<leader>u", group = "Переключатели UI" },
-        { "<leader>s", group = "Сплиты" },
-        { "<leader>r", group = "Запуск" },
+        { "<leader>d", group = t("Diagnostics") },
+        { "<leader>t", group = t("Terminal / themes") },
+        { "<leader>u", group = t("UI toggles") },
+        { "<leader>s", group = t("Splits") },
+        { "<leader>r", group = t("Run") },
         { "<leader>h", group = "Git hunks" },
-        { "<leader>b", group = "Буферы" },
+        { "<leader>b", group = t("Buffers") },
         { "<leader>w", group = "which-key" },
       },
     },
     keys = {
-      { "<leader>?", function() require("which-key").show({ global = false }) end, desc = "Клавиши этого буфера" },
-      { "<leader>wK", function() require("which-key").show() end, desc = "Все клавиши (which-key)" },
+      { "<leader>?", function() require("which-key").show({ global = false }) end, desc = t("Buffer keymaps") },
+      { "<leader>wK", function() require("which-key").show() end, desc = t("All keymaps (which-key)") },
     },
   },
 
@@ -64,19 +65,19 @@ return {
     version = "*",
     event = "VeryLazy",
     keys = {
-      { "<Tab>", "<cmd>BufferLineCycleNext<cr>", desc = "Следующий буфер" },
-      { "<S-Tab>", "<cmd>BufferLineCyclePrev<cr>", desc = "Предыдущий буфер" },
-      { "<leader>x", function() Snacks.bufdelete() end, desc = "Закрыть буфер" },
-      { "<leader>X", function() Snacks.bufdelete.other() end, desc = "Закрыть остальные буферы" },
-      { "<leader>bp", "<cmd>BufferLineTogglePin<cr>", desc = "Закрепить буфер" },
-      { "<leader>bj", "<cmd>BufferLinePick<cr>", desc = "Выбрать буфер по букве" },
+      { "<Tab>", "<cmd>BufferLineCycleNext<cr>", desc = t("Next buffer") },
+      { "<S-Tab>", "<cmd>BufferLineCyclePrev<cr>", desc = t("Previous buffer") },
+      { "<leader>x", function() Snacks.bufdelete() end, desc = t("Close buffer") },
+      { "<leader>X", function() Snacks.bufdelete.other() end, desc = t("Close other buffers") },
+      { "<leader>bp", "<cmd>BufferLineTogglePin<cr>", desc = t("Pin buffer") },
+      { "<leader>bj", "<cmd>BufferLinePick<cr>", desc = t("Pick buffer") },
     },
     opts = {
       options = {
         close_command = function(n) Snacks.bufdelete(n) end,
         diagnostics = "nvim_lsp",
         always_show_bufferline = true,
-        offsets = { { filetype = "NvimTree", text = "Файлы", highlight = "Directory", separator = true } },
+        offsets = { { filetype = "NvimTree", text = t("Files"), highlight = "Directory", separator = true } },
       },
     },
   },
@@ -89,13 +90,13 @@ return {
       on_attach = function(buf)
         local gs = require("gitsigns")
         local function map(mode, l, r, desc) vim.keymap.set(mode, l, r, { buffer = buf, desc = desc }) end
-        map("n", "]h", function() gs.nav_hunk("next") end, "Следующий hunk")
-        map("n", "[h", function() gs.nav_hunk("prev") end, "Предыдущий hunk")
-        map("n", "<leader>hp", gs.preview_hunk, "Показать изменение")
-        map("n", "<leader>hr", gs.reset_hunk, "Откатить изменение")
-        map("n", "<leader>hs", gs.stage_hunk, "Stage изменения")
-        map("n", "<leader>hb", function() gs.blame_line({ full = true }) end, "Blame строки")
-        map("n", "<leader>hd", gs.diffthis, "Diff файла")
+        map("n", "]h", function() gs.nav_hunk("next") end, t("Next hunk"))
+        map("n", "[h", function() gs.nav_hunk("prev") end, t("Previous hunk"))
+        map("n", "<leader>hp", gs.preview_hunk, t("Preview hunk"))
+        map("n", "<leader>hr", gs.reset_hunk, t("Reset hunk"))
+        map("n", "<leader>hs", gs.stage_hunk, t("Stage hunk"))
+        map("n", "<leader>hb", function() gs.blame_line({ full = true }) end, t("Blame line"))
+        map("n", "<leader>hd", gs.diffthis, t("Diff file"))
       end,
     },
   },
@@ -106,10 +107,10 @@ return {
     cmd = "Trouble",
     opts = {},
     keys = {
-      { "<leader>dd", "<cmd>Trouble diagnostics toggle<cr>", desc = "Ошибки проекта (список)" },
-      { "<leader>db", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Ошибки файла (список)" },
-      { "<leader>ds", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "Структура файла" },
-      { "<leader>dr", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", desc = "LSP: определения/ссылки" },
+      { "<leader>dd", "<cmd>Trouble diagnostics toggle<cr>", desc = t("Project diagnostics (Trouble)") },
+      { "<leader>db", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = t("Buffer diagnostics (Trouble)") },
+      { "<leader>ds", "<cmd>Trouble symbols toggle focus=false<cr>", desc = t("Symbols outline") },
+      { "<leader>dr", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", desc = t("LSP definitions/references") },
       { "<leader>dQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix" },
     },
   },
@@ -132,6 +133,6 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = {},
-    keys = { { "<leader>ft", "<cmd>TodoTelescope<cr>", desc = "TODO в проекте" } },
+    keys = { { "<leader>ft", "<cmd>TodoTelescope<cr>", desc = t("Project TODOs") } },
   },
 }

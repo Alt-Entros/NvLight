@@ -1,12 +1,13 @@
 -- Дерево файлов — тот же nvim-tree, что и в NvChad
+local t = require("config.i18n").t
 return {
   {
     "nvim-tree/nvim-tree.lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     cmd = { "NvimTreeToggle", "NvimTreeFocus", "NvimTreeOpen", "NvimTreeFindFile" },
     keys = {
-      { "<C-n>", "<cmd>NvimTreeToggle<cr>", desc = "Дерево: открыть/закрыть" },
-      { "<leader>e", "<cmd>NvimTreeFocus<cr>", desc = "Дерево: фокус" },
+      { "<C-n>", "<cmd>NvimTreeToggle<cr>", desc = t("Toggle file tree") },
+      { "<leader>e", "<cmd>NvimTreeFocus<cr>", desc = t("Focus file tree") },
     },
     init = function()
       -- netrw выключаем, чтобы `nvim .` открывал nvim-tree

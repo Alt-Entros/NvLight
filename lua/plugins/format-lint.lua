@@ -1,6 +1,7 @@
 -- Форматирование (conform) и дополнительные линтеры (nvim-lint).
 -- Форматирование при сохранении включено; <leader>uf — выключить/включить.
-vim.g.format_on_save = true
+local t = require("config.i18n").t
+vim.g.format_on_save = require("config.settings").format_on_save
 
 return {
   {
@@ -8,11 +9,11 @@ return {
     event = "BufWritePre",
     cmd = "ConformInfo",
     keys = {
-      { "<leader>lf", function() require("conform").format({ async = true }) end, mode = { "n", "v" }, desc = "Отформатировать" },
+      { "<leader>lf", function() require("conform").format({ async = true }) end, mode = { "n", "v" }, desc = t("Format") },
       { "<leader>uf", function()
           vim.g.format_on_save = not vim.g.format_on_save
-          vim.notify("Формат при сохранении: " .. (vim.g.format_on_save and "вкл" or "выкл"))
-        end, desc = "Формат при сохранении вкл/выкл" },
+          vim.notify(t("Format on save") .. ": " .. t(vim.g.format_on_save and "on" or "off"))
+        end, desc = t("Toggle format on save") },
     },
     opts = {
       formatters_by_ft = {

@@ -4,6 +4,7 @@
 --   mason-tool-installer — ставит форматтеры/линтеры
 -- Чтобы добавить язык: допиши сервер в `servers` (имя из :help lspconfig-all
 -- или из :Mason), при необходимости — настройки в vim.lsp.config ниже.
+local t = require("config.i18n").t
 
 -- LSP-серверы (имена nvim-lspconfig)
 local servers = {
@@ -77,25 +78,25 @@ local function on_attach(args)
   local tb = function(name) return function() require("telescope.builtin")[name]() end end
 
   -- Переходы (через telescope — если вариантов несколько, будет список с превью)
-  map("n", "gd", tb("lsp_definitions"), "Перейти к определению")
-  map("n", "gD", vim.lsp.buf.declaration, "Перейти к объявлению")
-  map("n", "gI", tb("lsp_implementations"), "Реализации")
-  map("n", "gy", tb("lsp_type_definitions"), "Определение типа")
-  map("n", "gR", tb("lsp_references"), "Где используется")
+  map("n", "gd", tb("lsp_definitions"), t("Go to definition"))
+  map("n", "gD", vim.lsp.buf.declaration, t("Go to declaration"))
+  map("n", "gI", tb("lsp_implementations"), t("Implementations"))
+  map("n", "gy", tb("lsp_type_definitions"), t("Type definition"))
+  map("n", "gR", tb("lsp_references"), t("References"))
   -- K — документация, grn — переименовать, gra — code action, grr — ссылки:
   -- встроены в nvim 0.11+, ниже дублирую на <leader>l для which-key
 
-  map({ "n", "v" }, "<leader>la", vim.lsp.buf.code_action, "Code action")
-  map("n", "<leader>lr", vim.lsp.buf.rename, "Переименовать")
-  map("n", "<leader>lk", vim.lsp.buf.signature_help, "Сигнатура функции")
-  map("n", "<leader>li", "<cmd>checkhealth vim.lsp<cr>", "Инфо о LSP")
-  map("n", "<leader>lR", "<cmd>LspRestart<cr>", "Перезапустить LSP")
+  map({ "n", "v" }, "<leader>la", vim.lsp.buf.code_action, t("Code action"))
+  map("n", "<leader>lr", vim.lsp.buf.rename, t("Rename"))
+  map("n", "<leader>lk", vim.lsp.buf.signature_help, t("Signature help"))
+  map("n", "<leader>li", "<cmd>checkhealth vim.lsp<cr>", t("LSP info"))
+  map("n", "<leader>lR", "<cmd>LspRestart<cr>", t("Restart LSP"))
   map("n", "<leader>lh", function()
     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = buf }), { bufnr = buf })
-  end, "Inlay hints вкл/выкл")
+  end, t("Toggle inlay hints"))
 
   if client.name == "clangd" then
-    map("n", "<leader>lo", "<cmd>LspClangdSwitchSourceHeader<cr>", "C/C++: .h ⇄ .c/.cpp")
+    map("n", "<leader>lo", "<cmd>LspClangdSwitchSourceHeader<cr>", t("C/C++: switch header/source"))
   end
 
   -- Подсветка всех вхождений слова под курсором

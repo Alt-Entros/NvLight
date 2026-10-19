@@ -77,11 +77,45 @@ winget install LLVM.LLVM                                  # clang — компи
 - Встроенный терминал и запуск файлов работают через PowerShell 7 (`pwsh`), если он установлен.
 - `telescope-fzf-native` без `make` не ставится — это нормально, поиск работает и без него.
 
+## Настройки и язык
+
+Личные настройки — в `lua/user.lua` (он в `.gitignore`, поэтому `git pull` с ним не конфликтует):
+
+```sh
+cp ~/.config/nvim/lua/user.example.lua ~/.config/nvim/lua/user.lua
+```
+
+```lua
+-- lua/user.lua
+return {
+  language = "ru",            -- язык интерфейса: "en" (по умолчанию) | "ru"
+  theme = "catppuccin-mocha", -- тема по умолчанию
+  transparent = false,        -- прозрачный фон
+  format_on_save = false,     -- формат при сохранении
+}
+```
+
+Указывай только то, что меняешь, остальное возьмётся из `lua/config/settings.lua`.
+После смены языка перезапусти nvim.
+
+- Тема и прозрачность, выбранные через `<leader>th` / `<leader>ut`, запоминаются и
+  важнее значений из `user.lua`. Сбросить выбор: удалить `~/.local/share/nvim/theme.json`.
+- Язык переводит описания клавиш (which-key, `<leader>fk`), стартовую страницу и уведомления.
+  Тексты самих плагинов (Lazy, Mason, Telescope) остаются на английском.
+- **Новый язык:** скопируй `lua/config/locales/ru.lua` в `lua/config/locales/<код>.lua`,
+  переведи значения и укажи `language = "<код>"`. Непереведённое останется на английском.
+- **Новая строка в конфиге:** пиши по-английски через `t("Text")`
+  (`local t = require("config.i18n").t`) и добавь перевод в `locales/ru.lua`.
+
 ## Структура
 
 ```
 init.lua
+lua/user.example.lua — пример личных настроек (копировать в lua/user.lua)
 lua/config/
+  settings.lua    — настройки по умолчанию (язык, тема, прозрачность, формат)
+  i18n.lua        — переводы: t("English text") → текст на выбранном языке
+  locales/ru.lua  — русский перевод
   options.lua     — опции, системный буфер обмена (+ OSC 52 по SSH)
   keymaps.lua     — общие клавиши
   autocmds.lua    — автокоманды (отступы по языкам, подсветка yank…)

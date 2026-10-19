@@ -2,11 +2,14 @@
 --   <leader>th — выбрать тему с живым превью (сохраняется между запусками)
 --   <leader>ut — включить/выключить прозрачный фон (тоже сохраняется)
 -- Состояние лежит в ~/.local/share/nvim/theme.json
+local t = require("config.i18n").t
 
 local M = {}
 
 local state_file = vim.fn.stdpath("data") .. "/theme.json"
-local default = { name = "tokyonight-night", transparent = true }
+local settings = require("config.settings")
+-- Начальные значения из настроек; выбор через <leader>th / <leader>ut их перекрывает
+local default = { name = settings.theme, transparent = settings.transparent }
 
 M.state = vim.deepcopy(default)
 
@@ -56,7 +59,7 @@ function M.toggle_transparency()
   write_state()
   -- перезагружаем тему, чтобы вернуть фон, если прозрачность выключили
   vim.cmd.colorscheme(vim.g.colors_name or M.state.name)
-  vim.notify("Прозрачность: " .. (M.state.transparent and "вкл" or "выкл"))
+  vim.notify(t("Transparency") .. ": " .. t(M.state.transparent and "on" or "off"))
 end
 
 function M.pick()
@@ -83,7 +86,7 @@ function M.setup()
   })
 
   if not pcall(vim.cmd.colorscheme, M.state.name) then
-    vim.notify("Тема " .. M.state.name .. " не найдена, ставлю " .. default.name, vim.log.levels.WARN)
+    vim.notify(t("Theme %s not found, using %s"):format(M.state.name, default.name), vim.log.levels.WARN)
     pcall(vim.cmd.colorscheme, default.name)
   end
 end

@@ -1,3 +1,4 @@
+local t = require("config.i18n").t
 local function tb(name, opts)
   return function() require("telescope.builtin")[name](opts or {}) end
 end
@@ -20,36 +21,36 @@ return {
     },
     keys = {
       -- Файлы и текст (раскладка как в NvChad)
-      { "<leader>ff", tb("find_files"), desc = "Файлы" },
-      { "<leader>fa", tb("find_files", { hidden = true, no_ignore = true }), desc = "Все файлы (вкл. скрытые и .gitignore)" },
-      { "<leader>fw", tb("live_grep"), desc = "Поиск по тексту (grep)" },
-      { "<leader>fW", tb("grep_string"), desc = "Grep слова под курсором", mode = { "n", "v" } },
-      { "<leader>fz", tb("current_buffer_fuzzy_find"), desc = "Поиск в текущем файле" },
-      { "<leader>fb", tb("buffers", { sort_mru = true, ignore_current_buffer = true }), desc = "Открытые буферы" },
-      { "<leader>fo", tb("oldfiles", { only_cwd = true }), desc = "Недавние файлы (проект)" },
-      { "<leader>fO", tb("oldfiles"), desc = "Недавние файлы (все)" },
-      { "<leader>fr", tb("resume"), desc = "Вернуться к последнему поиску" },
-      { "<leader><leader>", tb("buffers", { sort_mru = true, ignore_current_buffer = true }), desc = "Буферы" },
+      { "<leader>ff", tb("find_files"), desc = t("Find files") },
+      { "<leader>fa", tb("find_files", { hidden = true, no_ignore = true }), desc = t("All files (incl. hidden & ignored)") },
+      { "<leader>fw", tb("live_grep"), desc = t("Live grep") },
+      { "<leader>fW", tb("grep_string"), desc = t("Grep word under cursor"), mode = { "n", "v" } },
+      { "<leader>fz", tb("current_buffer_fuzzy_find"), desc = t("Search in current buffer") },
+      { "<leader>fb", tb("buffers", { sort_mru = true, ignore_current_buffer = true }), desc = t("Open buffers") },
+      { "<leader>fo", tb("oldfiles", { only_cwd = true }), desc = t("Recent files (project)") },
+      { "<leader>fO", tb("oldfiles"), desc = t("Recent files (all)") },
+      { "<leader>fr", tb("resume"), desc = t("Resume last search") },
+      { "<leader><leader>", tb("buffers", { sort_mru = true, ignore_current_buffer = true }), desc = t("Buffers") },
       -- Справка и сам nvim
-      { "<leader>fk", tb("keymaps"), desc = "Шорткаты (поиск)" },
-      { "<leader>fh", tb("help_tags"), desc = "Справка" },
-      { "<leader>fc", tb("commands"), desc = "Команды" },
-      { "<leader>f:", tb("command_history"), desc = "История команд" },
-      { "<leader>fm", tb("marks"), desc = "Метки" },
+      { "<leader>fk", tb("keymaps"), desc = t("Keymaps") },
+      { "<leader>fh", tb("help_tags"), desc = t("Help") },
+      { "<leader>fc", tb("commands"), desc = t("Commands") },
+      { "<leader>f:", tb("command_history"), desc = t("Command history") },
+      { "<leader>fm", tb("marks"), desc = t("Marks") },
       { "<leader>fq", tb("quickfix"), desc = "Quickfix" },
       { "<leader>fn", function()
           require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
-        end, desc = "Файлы конфига nvim" },
+        end, desc = t("Neovim config files") },
       -- LSP
-      { "<leader>fs", tb("lsp_document_symbols"), desc = "Символы файла" },
-      { "<leader>fS", tb("lsp_dynamic_workspace_symbols"), desc = "Символы проекта" },
-      { "<leader>fd", tb("diagnostics", { bufnr = 0 }), desc = "Ошибки в файле" },
-      { "<leader>fD", tb("diagnostics"), desc = "Ошибки в проекте" },
+      { "<leader>fs", tb("lsp_document_symbols"), desc = t("Document symbols") },
+      { "<leader>fS", tb("lsp_dynamic_workspace_symbols"), desc = t("Workspace symbols") },
+      { "<leader>fd", tb("diagnostics", { bufnr = 0 }), desc = t("Buffer diagnostics") },
+      { "<leader>fD", tb("diagnostics"), desc = t("Project diagnostics") },
       -- Git
-      { "<leader>gs", tb("git_status"), desc = "Git: изменённые файлы" },
-      { "<leader>gc", tb("git_commits"), desc = "Git: коммиты" },
-      { "<leader>gC", tb("git_bcommits"), desc = "Git: коммиты файла" },
-      { "<leader>gB", tb("git_branches"), desc = "Git: ветки" },
+      { "<leader>gs", tb("git_status"), desc = t("Git: status") },
+      { "<leader>gc", tb("git_commits"), desc = t("Git: commits") },
+      { "<leader>gC", tb("git_bcommits"), desc = t("Git: file commits") },
+      { "<leader>gB", tb("git_branches"), desc = t("Git: branches") },
     },
     init = function()
       -- Code actions и прочие vim.ui.select сразу идут через telescope,

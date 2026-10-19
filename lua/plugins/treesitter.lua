@@ -1,6 +1,7 @@
 -- Подсветка синтаксиса. Ветка main nvim-treesitter (новый API):
 -- парсеры ставятся через install(), подсветка включается через vim.treesitter.start().
 -- Для сборки парсеров нужен tree-sitter CLI (ставится через Mason) и компилятор C.
+local t = require("config.i18n").t
 local parsers = {
   "c", "cpp", "c_sharp", "python", "lua", "luadoc", "vim", "vimdoc", "query",
   "bash", "dockerfile", "yaml", "json", "toml", "nginx", "caddy", "ini", "xml",
@@ -37,7 +38,7 @@ return {
             vim.schedule(function()
               if not install_missing() then
                 vim.notify(
-                  "tree-sitter CLI не найден — проверь :Mason (tree-sitter-cli) или поставь: brew install tree-sitter-cli",
+                  t("tree-sitter CLI not found — check :Mason (tree-sitter-cli) or install it: brew install tree-sitter-cli"),
                   vim.log.levels.WARN
                 )
               end
