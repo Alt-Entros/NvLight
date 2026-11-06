@@ -40,6 +40,13 @@ au("FileType", {
   end,
 })
 
+-- Markdown: перенос по словам, Enter по [[ссылке]], <leader>m… (lua/config/markdown.lua)
+au("FileType", {
+  group = group,
+  pattern = "markdown",
+  callback = function(args) require("config.markdown").attach(args.buf) end,
+})
+
 -- Выравнивать сплиты при изменении размера терминала
 au("VimResized", { group = group, command = "tabdo wincmd =" })
 

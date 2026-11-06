@@ -31,6 +31,8 @@ local servers = {
   "cssls",
   "tailwindcss",
   "eslint",
+  -- Markdown-заметки в стиле Obsidian: [[ссылки]], обратные ссылки, теги
+  "markdown_oxide",
 }
 
 -- Форматтеры, линтеры и прочее (имена пакетов Mason)
@@ -225,6 +227,15 @@ return {
             },
           },
         },
+      })
+
+      -- Хранилище заметок: папка с .obsidian / .moxide.toml / .git,
+      -- иначе папка файла (как «открыть папку как хранилище» в Obsidian)
+      vim.lsp.config("markdown_oxide", {
+        root_dir = function(buf, on_dir) on_dir(require("config.markdown").root(buf)) end,
+        capabilities = vim.tbl_deep_extend("force", require("blink.cmp").get_lsp_capabilities(), {
+          workspace = { didChangeWatchedFiles = { dynamicRegistration = true } },
+        }),
       })
 
       -- C# (roslyn.nvim сам находит .sln/.csproj и запускает сервер)

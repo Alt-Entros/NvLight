@@ -2,7 +2,7 @@
 
 Свой конфиг вместо NvChad: lazy.nvim, LSP ставятся и запускаются сами через Mason,
 blink.cmp, conform (формат при сохранении), telescope, nvim-tree, toggleterm,
-пикер тем как в NvChad, стартовая страница.
+пикер тем как в NvChad, стартовая страница, markdown-заметки как в Obsidian.
 
 ## Установка
 
@@ -47,6 +47,7 @@ NVIM_APPNAME=nvim-test nvim
 brew install ripgrep fd lazygit python node
 brew install --cask dotnet-sdk      # для C# (roslyn)
 brew install caddy                  # опционально — форматирование Caddyfile
+brew install imagemagick            # опционально — jpg/gif/svg в markdown (PNG видно и без него)
 xcode-select --install              # make + clang для telescope-fzf-native и парсеров treesitter
 ```
 
@@ -133,6 +134,8 @@ lua/plugins/
   ui.lua          — which-key, lualine, bufferline, gitsigns, trouble, отступы, TODO
   colorschemes.lua— темы
   dashboard.lua   — стартовая страница
+  markdown.lua    — рендер markdown, картинки, клавиши заметок
+lua/config/markdown.lua — переходы по [[ссылкам]], обратные ссылки, чекбоксы
 ```
 
 **Добавить язык:** имя LSP — в `servers` в `lsp.lua`, форматтер — в `tools` и в
@@ -154,6 +157,7 @@ lua/plugins/
 | bash / TOML | bashls (+ shellcheck) / taplo | shfmt / taplo |
 | Lua | lua_ls + lazydev | stylua |
 | Vue / TS / HTML / CSS | vtsls + vue_ls, html, cssls, tailwindcss, eslint | prettier |
+| Markdown | markdown_oxide | prettier |
 
 **C/C++:** clangd нужен `compile_commands.json` в корне проекта, иначе он не найдёт
 инклуды. CMake: `cmake -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON && ln -s build/compile_commands.json .`;
@@ -283,6 +287,31 @@ Make: `bear -- make` (`brew install bear`). Для одиночных файло
 | `<leader>hr` / `<leader>hs` | откатить / stage изменения |
 | `<leader>hb` | blame строки |
 | `<leader>hd` | diff файла |
+
+### Markdown / заметки (как Obsidian)
+Markdown рендерится прямо в буфере: заголовки, списки, чекбоксы, таблицы, код,
+callout'ы `> [!note]`, картинки `![](img.png)` / `![[img.png]]` (в kitty, WezTerm, Ghostty).
+На строке с курсором виден исходный текст — как Live Preview в Obsidian.
+
+Хранилище (vault) — ближайшая папка вверх с `.obsidian`, `.moxide.toml` или `.git`,
+иначе папка файла. Так что можно открыть существующее хранилище Obsidian: `cd ~/Notes && nvim`.
+
+| Клавиша | Действие |
+|---|---|
+| `<Enter>` / `gf` | открыть ссылку под курсором: `[[заметка]]`, `[[заметка#Заголовок\|текст]]`, `[текст](файл.md)`, URL; на чекбоксе — отметить |
+| `<C-o>` | вернуться назад |
+| `[[` (insert) | автодополнение заметок и заголовков |
+| `gR` | где упоминается заголовок / тег под курсором (LSP) |
+| `<leader>mb` | обратные ссылки — какие заметки ссылаются на эту |
+| `<leader>mf` / `<leader>mg` | найти заметку / поиск по тексту заметок |
+| `<leader>mt` | все `#теги` хранилища |
+| `<leader>md` | заметка на сегодня (`:LspToday`, `:LspTomorrow`, `:LspYesterday`) |
+| `<leader>mc` | чекбокс `[ ]` ⇄ `[x]` |
+| `<leader>mo` (или `gO`) | оглавление файла |
+| `<leader>mr` | рендер вкл/выкл (показать исходный markdown) |
+
+Ссылка на несуществующую заметку открывает новый пустой файл в корне хранилища —
+он появится на диске после сохранения.
 
 ### Темы и интерфейс
 | Клавиша | Действие |

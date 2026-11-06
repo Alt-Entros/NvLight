@@ -21,6 +21,7 @@ return {
         { "<leader>h", group = "Git hunks" },
         { "<leader>b", group = t("Buffers") },
         { "<leader>w", group = "which-key" },
+        { "<leader>m", group = t("Markdown / notes") },
       },
     },
     keys = {
