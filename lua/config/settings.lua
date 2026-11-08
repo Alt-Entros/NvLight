@@ -20,6 +20,10 @@ local defaults = {
 
   -- Format on save (toggle at runtime: <leader>uf)
   format_on_save = true,
+
+  -- Database connections for <leader>SS: { name = "url" }
+  -- e.g. { dev = "postgres://user:pass@localhost:5432/app", local_db = "sqlite:~/app.db" }
+  databases = {},
 }
 
 local ok, user = pcall(require, "user")

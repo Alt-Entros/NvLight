@@ -48,6 +48,7 @@ brew install ripgrep fd lazygit python node
 brew install --cask dotnet-sdk      # для C# (roslyn)
 brew install caddy                  # опционально — форматирование Caddyfile
 brew install imagemagick            # опционально — jpg/gif/svg в markdown (PNG видно и без него)
+brew install libpq mysql-client && brew link --force libpq mysql-client  # опционально — psql/mysql для баз данных
 xcode-select --install              # make + clang для telescope-fzf-native и парсеров treesitter
 ```
 
@@ -135,6 +136,7 @@ lua/plugins/
   colorschemes.lua— темы
   dashboard.lua   — стартовая страница
   markdown.lua    — рендер markdown, картинки, клавиши заметок
+  database.lua    — базы данных (vim-dadbod-ui), запуск запросов
 lua/config/markdown.lua — переходы по [[ссылкам]], обратные ссылки, чекбоксы
 ```
 
@@ -312,6 +314,39 @@ callout'ы `> [!note]`, картинки `![](img.png)` / `![[img.png]]` (в kit
 
 Ссылка на несуществующую заметку открывает новый пустой файл в корне хранилища —
 он появится на диске после сохранения.
+
+### Базы данных (как Database в GoLand)
+vim-dadbod-ui: слева панель подключений → схемы → таблицы (колонки, индексы, ключи),
+консоли запросов, результат в окне снизу, автодополнение таблиц и колонок.
+Нужен консольный клиент базы: `psql`, `mysql`, `sqlite3` (есть в macOS), `sqlcmd`, `mongosh`, `redis-cli`.
+
+| Клавиша | Действие |
+|---|---|
+| `<leader>SS` | **панель баз данных** |
+| `<leader>Sa` | добавить подключение (сохраняется в `~/.local/share/db_ui/connections.json`) |
+| `<C-Enter>` / `<leader>Se` | выполнить запрос под курсором (до пустых строк) / выделение |
+| `<leader>SE` | выполнить весь файл |
+| `<leader>Sb` | привязать обычный `.sql`-файл к базе (при первом запуске спросит сам) |
+| `<leader>Ss` | сохранить консоль как запрос (Saved queries) |
+| `<leader>Sp` | значения параметров `:name` в запросе |
+| `<leader>Sr` / `<leader>Si` | переименовать консоль / время последнего запроса |
+| В панели: `o`/`<Enter>` | раскрыть; на таблице — меню (List, Columns, Indexes…) |
+| В панели: `A` / `R` / `d` / `r` / `H` / `q` | добавить / обновить / удалить / переименовать / подробности / закрыть |
+
+В отличие от GoLand, сохранение файла запрос **не** выполняет.
+
+Подключения можно задать и в `lua/user.lua`, и через переменные окружения или `.env` (`DB_UI_DEV=postgres://…`):
+```lua
+databases = {
+  dev = "postgres://user:password@localhost:5432/app",
+  shop = "mysql://root@127.0.0.1:3306/shop",
+  local_db = "sqlite:" .. vim.fn.expand("~/data/app.db"),
+},
+```
+Пароль из URL хранится открытым текстом, поэтому в `user.lua` (он в `.gitignore`) или в `.env`, но не в git.
+
+Клиенты: macOS — `brew install libpq mysql-client && brew link --force libpq mysql-client`;
+Arch — `sudo pacman -S postgresql mariadb-clients sqlite`.
 
 ### Темы и интерфейс
 | Клавиша | Действие |

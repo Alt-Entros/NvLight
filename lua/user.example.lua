@@ -8,4 +8,9 @@ return {
   -- theme = "catppuccin-mocha",
   -- transparent = false,
   -- format_on_save = false,
+  -- databases = {
+  --   dev = "postgres://user:password@localhost:5432/app",
+  --   shop = "mysql://root@127.0.0.1:3306/shop",
+  --   local_db = "sqlite:" .. vim.fn.expand("~/data/app.db"),
+  -- },
 }
